@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/providers/character_provider.dart';
+import 'package:rick_and_morty_app/src/features/characters/presentation/widgets/theme_toggle_button.dart';
 import 'widgets/character_card.dart';
 
 class CharacterListScreen extends StatelessWidget {
@@ -15,7 +16,7 @@ class CharacterListScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text(StringConsts.appBarCharacters),
-            backgroundColor: Colors.deepPurpleAccent,
+            actions: const [ThemeToggleButton()],
           ),
           body: characters.isEmpty
               ? const Center(
