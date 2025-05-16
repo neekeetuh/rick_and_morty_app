@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/providers/character_provider.dart';
 import 'widgets/character_card.dart';
 
@@ -13,13 +14,13 @@ class CharacterListScreen extends StatelessWidget {
         final characters = characterProvider.allCharacters;
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Rick and Morty Characters"),
+            title: const Text(StringConsts.appBarCharacters),
             backgroundColor: Colors.deepPurpleAccent,
           ),
           body: characters.isEmpty
               ? const Center(
                   child: Text(
-                  "No available characters.",
+                  StringConsts.noAvailableCharacters,
                 ))
               : ListView.builder(
                   itemCount: characters.length,

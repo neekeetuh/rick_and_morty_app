@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/character_list_screen.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/favorites_screen.dart';
 
@@ -33,11 +34,11 @@ class _BaseScreenState extends State<BaseScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'Characters',
+            label: StringConsts.charactersTabTitle,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
-            label: 'Favorites',
+            label: StringConsts.favoritesTabTitle,
           ),
         ],
         currentIndex: _selectedIndex,

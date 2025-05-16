@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/providers/character_provider.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
 
@@ -110,7 +111,7 @@ class CharacterCard extends StatelessWidget {
                       const SizedBox(width: 6.0),
                       Expanded(
                         child: Text(
-                          "Status: ${character.status.statusText}",
+                          "${StringConsts.characterCardStatus}: ${character.status.statusText}",
                           style: TextStyle(
                               fontSize: 13.0, color: Colors.grey[700]),
                           overflow: TextOverflow.ellipsis,
@@ -120,13 +121,13 @@ class CharacterCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4.0),
                   Text(
-                    "Species: ${character.species}",
+                    "${StringConsts.characterCardSpecies}: ${character.species}",
                     style: TextStyle(fontSize: 13.0, color: Colors.grey[700]),
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4.0),
                   Text(
-                    "Location: ${character.lastKnownLocation}",
+                    "${StringConsts.characterCardLoaction}: ${character.lastKnownLocation}",
                     style: TextStyle(fontSize: 13.0, color: Colors.grey[700]),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,

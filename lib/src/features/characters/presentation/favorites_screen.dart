@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/providers/character_provider.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
-
-import 'widgets/character_card.dart';
+import 'package:rick_and_morty_app/src/features/characters/presentation/widgets/character_card.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -33,7 +33,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Favorite characters"),
+            title: const Text(StringConsts.appBarFavorites),
             actions: [
               PopupMenuButton<String>(
                 icon: const Icon(Icons.sort),
@@ -45,15 +45,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   const PopupMenuItem<String>(
                     value: 'name_asc',
-                    child: Text('По имени (А-Я)'),
+                    child: Text(StringConsts.sortInAsc),
                   ),
                   const PopupMenuItem<String>(
                     value: 'name_desc',
-                    child: Text('По имени (Я-А)'),
+                    child: Text(StringConsts.sortInDesc),
                   ),
                   const PopupMenuItem<String>(
                     value: 'status',
-                    child: Text('По статусу'),
+                    child: Text(StringConsts.sortByStatus),
                   ),
                 ],
               ),
@@ -62,7 +62,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           body: favoriteCharacters.isEmpty
               ? const Center(
                   child: Text(
-                    "The list is empty.\nYou can add characters on the main page!",
+                    StringConsts.favoritesListIsEmpty,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16.0),
                   ),
