@@ -31,23 +31,28 @@ class CharacterCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
-                  return Container(
+                  return SizedBox(
                     width: imageWidth,
                     height: imageWidth,
-                    color: Colors.grey[300],
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                    child: ColoredBox(
+                      color: Colors.grey[300]!,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
                   );
                 },
                 errorBuilder: (context, _, __) {
-                  return Container(
+                  return SizedBox(
                     width: imageWidth,
-                    color: Colors.grey[300],
-                    child: Icon(
-                      Icons.broken_image,
-                      color: Colors.grey,
-                      size: imageWidth * 0.5,
+                    height: imageWidth,
+                    child: ColoredBox(
+                      color: Colors.grey[300]!,
+                      child: Icon(
+                        Icons.broken_image,
+                        color: Colors.grey,
+                        size: imageWidth * 0.5,
+                      ),
                     ),
                   );
                 },
