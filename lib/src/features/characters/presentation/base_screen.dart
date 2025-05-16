@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
+import 'package:rick_and_morty_app/src/features/characters/presentation/bloc/bloc/characters_bloc.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/character_list_screen.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/favorites_screen.dart';
 
@@ -22,6 +24,12 @@ class _BaseScreenState extends State<BaseScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    context.read<CharactersBloc>().add(const LoadCharactersEvent());
+    super.didChangeDependencies();
   }
 
   @override

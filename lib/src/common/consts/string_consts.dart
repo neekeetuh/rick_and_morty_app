@@ -14,4 +14,6 @@ abstract class StringConsts {
   static const String noAvailableCharacters = 'No available characters.';
   static const String favoritesListIsEmpty =
       'The list is empty.\nYou can add characters on the main page!';
+  static const String charactersLoadingErrorText =
+      'Couldn\'t load characters, please try again';
 }

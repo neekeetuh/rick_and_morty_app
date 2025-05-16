@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:rick_and_morty_app/src/common/consts/color_consts.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
 import 'package:rick_and_morty_app/src/common/consts/text_styles_consts.dart';
-import 'package:rick_and_morty_app/src/features/characters/data/providers/character_provider.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
+import 'package:rick_and_morty_app/src/features/characters/presentation/bloc/bloc/characters_bloc.dart';
 
 class CharacterCard extends StatelessWidget {
   final Character character;
@@ -92,8 +92,8 @@ class CharacterCard extends StatelessWidget {
                           ),
                           onPressed: () {
                             context
-                                .read<CharacterProvider>()
-                                .toggleFavoriteStatus(character.id);
+                                .read<CharactersBloc>()
+                                .add(ToggleFavoriteEvent(character: character));
                           },
                         ),
                       ),

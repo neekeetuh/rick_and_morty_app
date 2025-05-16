@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
 import 'package:rick_and_morty_app/src/common/theme/theme_provider.dart';
 import 'package:rick_and_morty_app/src/common/theme/themes.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/data_sources/characters_api_data_source.dart';
-import 'package:rick_and_morty_app/src/features/characters/data/providers/character_provider.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/repositories/characters_repository.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/base_screen.dart';
+import 'package:rick_and_morty_app/src/features/characters/presentation/bloc/bloc/characters_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,8 +27,8 @@ class MyApp extends StatelessWidget {
           theme: Provider.of<ThemeProvider>(context).isDarkMode
               ? darkTheme
               : lightTheme,
-          home: ChangeNotifierProvider(
-            create: (context) => CharacterProvider(
+          home: BlocProvider<CharactersBloc>(
+            create: (context) => CharactersBloc(
                 repository: CharactersRepository(
               charactersDataSource: CharactersApiDataSource(
                 dio: Dio(),
