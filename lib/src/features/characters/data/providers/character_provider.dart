@@ -1,67 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
+import 'package:rick_and_morty_app/src/features/characters/domain/repositories/characters_repository.dart';
 
 class CharacterProvider with ChangeNotifier {
-  final List<Character> _allCharacters = [
-    Character(
-      id: 1,
-      name: "Rick Sanchez",
-      imageUrl: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-      status: CharacterStatus.alive,
-      species: "Human",
-      lastKnownLocation: "Earth (C-137)",
-    ),
-    Character(
-      id: 2,
-      name: "Morty Smith",
-      imageUrl: "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-      status: CharacterStatus.alive,
-      species: "Human",
-      lastKnownLocation: "Earth (C-137)",
-      isFavorite: true,
-    ),
-    Character(
-      id: 3,
-      name: "Summer Smith",
-      imageUrl: "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
-      status: CharacterStatus.alive,
-      species: "Human",
-      lastKnownLocation: "Earth (Replacement Dimension)",
-    ),
-    Character(
-      id: 4,
-      name: "Beth Smith",
-      imageUrl: "https://rickandmortyapi.com/api/character/avatar/4.jpeg",
-      status: CharacterStatus.alive,
-      species: "Human",
-      lastKnownLocation: "Earth (Replacement Dimension)",
-    ),
-    Character(
-      id: 5,
-      name: "Jerry Smith",
-      imageUrl: "https://rickandmortyapi.com/api/character/avatar/5.jpeg",
-      status: CharacterStatus.alive,
-      species: "Human",
-      lastKnownLocation: "Earth (Replacement Dimension)",
-    ),
-    Character(
-      id: 6,
-      name: "Abradolf Lincler",
-      imageUrl: "https://rickandmortyapi.com/api/character/avatar/7.jpeg",
-      status: CharacterStatus.unknown,
-      species: "Human Clone",
-      lastKnownLocation: "Testicle MonsterDimension",
-    ),
-    Character(
-      id: 8,
-      name: "Adjudicator Rick",
-      imageUrl: "https://rickandmortyapi.com/api/character/avatar/8.jpeg",
-      status: CharacterStatus.dead,
-      species: "Human",
-      lastKnownLocation: "Citadel of Ricks",
-      isFavorite: true,
-    ),
-  ];
+  final CharactersRepository repository;
+
+  CharacterProvider({required this.repository}) {
+    loadCharacters();
+  }
+
+  List<Character> _allCharacters = [];
+
+  Future<void> loadCharacters() async {
+    _allCharacters = await repository.loadCharacters();
+    notifyListeners();
+  }
 
   List<Character> get allCharacters => _allCharacters;
 
