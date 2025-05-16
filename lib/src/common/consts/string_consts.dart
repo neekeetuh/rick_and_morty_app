@@ -1,4 +1,4 @@
-class StringConsts {
+abstract class StringConsts {
   static const String appName = 'Rick and Morty App';
   static const String appBarCharacters = 'Rick and Morty Characters';
   static const String appBarFavorites = 'Favorite Characters';

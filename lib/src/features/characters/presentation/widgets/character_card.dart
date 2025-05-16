@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rick_and_morty_app/src/common/consts/color_consts.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
+import 'package:rick_and_morty_app/src/common/consts/text_styles_consts.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/providers/character_provider.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
 
@@ -64,10 +66,7 @@ class CharacterCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           character.name,
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStylesConsts.header2,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                         ),
@@ -83,8 +82,8 @@ class CharacterCard extends StatelessWidget {
                                 ? Icons.star
                                 : Icons.star_border,
                             color: character.isFavorite
-                                ? Colors.amber
-                                : Colors.grey,
+                                ? ColorConsts.favoriteIconChosen
+                                : ColorConsts.favoriteIconHollow,
                           ),
                           onPressed: () {
                             context
@@ -112,8 +111,8 @@ class CharacterCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           "${StringConsts.characterCardStatus}: ${character.status.statusText}",
-                          style: TextStyle(
-                              fontSize: 13.0, color: Colors.grey[700]),
+                          style: TextStylesConsts.caption2
+                              .copyWith(color: Colors.grey[700]),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -122,13 +121,15 @@ class CharacterCard extends StatelessWidget {
                   const SizedBox(height: 4.0),
                   Text(
                     "${StringConsts.characterCardSpecies}: ${character.species}",
-                    style: TextStyle(fontSize: 13.0, color: Colors.grey[700]),
+                    style: TextStylesConsts.caption2
+                        .copyWith(color: Colors.grey[700]),
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4.0),
                   Text(
                     "${StringConsts.characterCardLoaction}: ${character.lastKnownLocation}",
-                    style: TextStyle(fontSize: 13.0, color: Colors.grey[700]),
+                    style: TextStylesConsts.caption2
+                        .copyWith(color: Colors.grey[700]),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),

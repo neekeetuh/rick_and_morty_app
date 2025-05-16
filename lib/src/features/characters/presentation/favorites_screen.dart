@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
+import 'package:rick_and_morty_app/src/common/consts/text_styles_consts.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/providers/character_provider.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/widgets/character_card.dart';
@@ -64,13 +65,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   child: Text(
                     StringConsts.favoritesListIsEmpty,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16.0),
+                    style: TextStylesConsts.body2,
                   ),
                 )
               : ListView.builder(
                   itemCount: favoriteCharacters.length,
-                  itemBuilder: (context, index) =>
-                      CharacterCard(character: favoriteCharacters[index]),
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: CharacterCard(character: favoriteCharacters[index]),
+                  ),
                 ),
         );
       },
