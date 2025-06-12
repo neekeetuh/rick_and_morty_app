@@ -17,47 +17,53 @@ class CharacterListScreen extends StatelessWidget {
       ),
       body: BlocBuilder<CharactersBloc, CharactersState>(
         builder: (context, state) {
-          if (state is LoadingCharactersState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
           if (state is ErrorCharactersState) {
             return const Center(
               child: Text(StringConsts.charactersLoadingErrorText),
             );
           }
           final characters = state.characters ?? [];
-          return characters.isEmpty
-              ? const Center(
-                  child: Text(
-                  StringConsts.noAvailableCharacters,
-                ))
-              : NotificationListener<ScrollNotification>(
-                  onNotification: _onNotification,
-                  child: ListView.builder(
-                    itemCount: characters.length,
-                    itemBuilder: (conext, index) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      child: CharacterCard(character: characters[index]),
+          return NotificationListener<ScrollNotification>(
+            onNotification: (notification) =>
+                _onNotification(notification, context),
+            child: CustomScrollView(
+              key: const PageStorageKey('characters'),
+              slivers: [
+                if (state is LoadingCharactersState) ...[
+                  const SliverToBoxAdapter(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
+                  )
+                ],
+                SliverList.builder(
+                  itemCount: characters.length,
+                  itemBuilder: (conext, index) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: CharacterCard(character: characters[index]),
                   ),
-                );
+                ),
+              ],
+            ),
+          );
         },
         buildWhen: (previous, current) => current is! IdleCharactersState,
       ),
     );
   }
 
-  bool _onNotification(ScrollNotification notification) {
+  bool _onNotification(ScrollNotification notification, BuildContext context) {
     if (notification is ScrollEndNotification &&
         notification.metrics.pixels == notification.metrics.minScrollExtent) {
-      //TODO: implement refreshing
+      context.read<CharactersBloc>().add(const RefreshCharactersEvent());
     }
     if (notification is ScrollEndNotification &&
         notification.metrics.pixels == notification.metrics.maxScrollExtent) {
-      //TODO: implement paginated loading
+      context.read<CharactersBloc>().add(const LoadCharactersEvent());
     }
     return false;
   }

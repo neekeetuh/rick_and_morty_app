@@ -66,6 +66,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     ),
                   )
                 : ListView.builder(
+                    key: const PageStorageKey('favorites'),
                     itemCount: favoriteCharacters.length,
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.symmetric(
@@ -75,6 +76,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     ),
                   );
           },
+          buildWhen: (previous, current) => current is! IdleCharactersState,
         ));
   }
 }

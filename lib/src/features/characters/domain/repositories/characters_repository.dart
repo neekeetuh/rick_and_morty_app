@@ -8,11 +8,9 @@ class CharactersRepository {
   CharactersRepository(
       {required CharactersDataSourceInterface charactersDataSource})
       : _charactersDataSource = charactersDataSource;
-  Future<List<Character>> loadCharacters() async {
+  Future<List<Character>> loadCharacters({int page = 1}) async {
     var dtos = <CharacterDto>[];
-
-    dtos = await _charactersDataSource.fetchCharacters();
-
+    dtos = await _charactersDataSource.fetchCharacters(page: page);
     return dtos.map((dto) => Character.fromDto(dto)).toList();
   }
 }

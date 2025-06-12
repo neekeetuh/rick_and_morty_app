@@ -21,7 +21,7 @@ sealed class CharactersState {
 }
 
 final class IdleCharactersState extends CharactersState {
-  const IdleCharactersState({super.characters, s});
+  const IdleCharactersState({super.characters});
 }
 
 final class LoadingCharactersState extends CharactersState {

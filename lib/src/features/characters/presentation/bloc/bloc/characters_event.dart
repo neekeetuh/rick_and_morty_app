@@ -12,3 +12,7 @@ final class ToggleFavoriteEvent extends CharactersEvent {
   final Character character;
   const ToggleFavoriteEvent({required this.character});
 }
+
+final class RefreshCharactersEvent extends CharactersEvent {
+  const RefreshCharactersEvent();
+}
