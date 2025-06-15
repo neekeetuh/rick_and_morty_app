@@ -1,26 +1,4 @@
-class LocationDto {
-  final String name;
-  final String url;
-
-  LocationDto({
-    required this.name,
-    required this.url,
-  });
-
-  factory LocationDto.fromJson(Map<String, dynamic> json) {
-    return LocationDto(
-      name: json['name'] as String? ?? 'Unknown Location',
-      url: json['url'] as String? ?? '',
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'url': url,
-    };
-  }
-}
+import 'package:rick_and_morty_app/src/features/characters/data/dtos/location_dto.dart';
 
 class CharacterDto {
   final int id;

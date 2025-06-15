@@ -48,7 +48,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         ),
         body: BlocBuilder<CharactersBloc, CharactersState>(
           builder: (context, state) {
-            List<Character> favoriteCharacters = state.favoriteCharacters;
+            List<Character> favoriteCharacters = state.favorites ?? [];
             if (_sortCriteria == 'name_asc') {
               favoriteCharacters.sort((a, b) => a.name.compareTo(b.name));
             } else if (_sortCriteria == 'name_desc') {

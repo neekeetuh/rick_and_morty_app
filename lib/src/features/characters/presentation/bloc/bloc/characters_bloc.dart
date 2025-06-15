@@ -6,6 +6,7 @@ part 'characters_event.dart';
 part 'characters_state.dart';
 
 const _pagesAmount = 42;
+const _pageLimit = 20;
 
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   final CharactersRepository _repository;
@@ -30,39 +31,64 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
       LoadCharactersEvent event, Emitter<CharactersState> emit) async {
     if (state is LoadingCharactersState) return;
     if (_currentPage > _pagesAmount) return;
-    emit(LoadingCharactersState(characters: state.characters));
+    emit(LoadingCharactersState(
+        characters: state.characters, favorites: state.favorites));
     try {
-      final characters = await _repository.loadCharacters(page: _currentPage);
+      final characters = await _repository.loadCharacters(
+          page: _currentPage, pageLimit: _pageLimit);
       _currentPage++;
       final allCharacters = state.characters ?? [];
       allCharacters.addAll(characters);
-      emit(SucessfulCharactersState(characters: allCharacters));
-    } on Exception catch (e) {
+      final allFavorites = await _repository.loadFavorites();
+      emit(SucessfulCharactersState(
+          characters: allCharacters, favorites: allFavorites));
+    } catch (e) {
       emit(ErrorCharactersState(error: e));
-    } finally {
-      emit(IdleCharactersState(characters: state.characters));
     }
   }
 
   Future<void> _onToggleFavoriteEvent(
       ToggleFavoriteEvent event, Emitter<CharactersState> emit) async {
-    event.character.isFavorite = !event.character.isFavorite;
-    emit(SucessfulCharactersState(characters: state.characters));
-    emit(IdleCharactersState(characters: state.characters));
+    try {
+      await _repository.toggleFavoriteStatus(event.character.id);
+    } catch (e) {
+      emit(ErrorCharactersState(error: e));
+    }
+
+    var allCharacters = state.characters;
+    var allFavorites = state.favorites;
+
+    try {
+      allCharacters
+          ?.singleWhere((character) => character.id == event.character.id)
+          .toggleIsFavorite();
+    } catch (_) {}
+
+    final index = allFavorites
+        ?.indexWhere((character) => character.id == event.character.id);
+    if (index == -1) {
+      allFavorites?.add(event.character);
+    } else {
+      if (index != null) {
+        allFavorites?.removeAt(index);
+      }
+    }
+    emit(SucessfulCharactersState(
+        characters: allCharacters, favorites: allFavorites));
   }
 
   Future<void> _onRefreshCharactersEvent(
       RefreshCharactersEvent event, Emitter<CharactersState> emit) async {
-    emit(LoadingCharactersState(characters: state.characters));
+    emit(LoadingCharactersState(
+        characters: state.characters, favorites: state.favorites));
     try {
       _currentPage = 1;
       final characters = await _repository.loadCharacters(page: _currentPage);
       _currentPage++;
-      emit(SucessfulCharactersState(characters: characters));
-    } on Exception catch (e) {
+      emit(SucessfulCharactersState(
+          characters: characters, favorites: state.favorites));
+    } catch (e) {
       emit(ErrorCharactersState(error: e));
-    } finally {
-      emit(IdleCharactersState(characters: state.characters));
     }
   }
 }

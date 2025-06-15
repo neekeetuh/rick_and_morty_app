@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+
+import 'package:rick_and_morty_app/src/common/consts/color_consts.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/dtos/character_dto.dart';
+import 'package:rick_and_morty_app/src/features/characters/data/dtos/location_dto.dart';
 
 enum CharacterStatus {
-  alive(statusColor: Colors.green, statusText: 'Alive', statusCode: 'Alive'),
-  dead(statusColor: Colors.red, statusText: 'Dead', statusCode: 'Dead'),
+  alive(
+      statusColor: ColorConsts.aliveStatusColor,
+      statusText: 'Alive',
+      statusCode: 'Alive'),
+  dead(
+      statusColor: ColorConsts.deadStatusColor,
+      statusText: 'Dead',
+      statusCode: 'Dead'),
   unknown(
-      statusColor: Colors.grey, statusText: 'Unknown', statusCode: 'unknown');
+      statusColor: ColorConsts.unknownStatusColor,
+      statusText: 'Unknown',
+      statusCode: 'unknown');
 
   final Color statusColor;
   final String statusText;
@@ -15,6 +26,11 @@ enum CharacterStatus {
       {required this.statusColor,
       required this.statusText,
       required this.statusCode});
+
+  static CharacterStatus fromName(String statusCode) {
+    return CharacterStatus.values
+        .firstWhere((el) => el.statusCode == statusCode);
+  }
 }
 
 class Character {
@@ -41,8 +57,7 @@ class Character {
       id: dto.id,
       name: dto.name,
       imageUrl: dto.image,
-      status: CharacterStatus.values
-          .firstWhere((el) => el.statusCode == dto.status),
+      status: CharacterStatus.fromName(dto.status),
       species: dto.species,
       lastKnownLocation: dto.location.name,
     );
@@ -54,8 +69,12 @@ class Character {
       name: name,
       status: status.statusText,
       species: species,
-      location: LocationDto(name: lastKnownLocation, url: ''),
+      location: LocationDto(name: lastKnownLocation),
       image: imageUrl,
     );
+  }
+
+  void toggleIsFavorite() {
+    isFavorite = !isFavorite;
   }
 }
