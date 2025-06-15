@@ -1,4 +1,4 @@
-# Rick and Morty characters app
+# Rick and Morty characters app (16 hours spent)
 
 - An app where a user can see a list of Rick and Morty characters and add them to personal favorites.
 - Implemented caching characters so the app can run without internet connection
