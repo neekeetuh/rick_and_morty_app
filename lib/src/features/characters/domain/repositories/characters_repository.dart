@@ -19,6 +19,7 @@ class CharactersRepository {
       final dtos = await _charactersDataSource.fetchCharacters(page: page);
       await _db
           .upsertCharacters((dtos.map((dto) => dto.toCompanion())).toList());
+    } catch (_) {
     } finally {
       characters = ((await _db.fetchCharacters(page, pageLimit))
           .map((characterDataClass) => characterDataClass.toModel())).toList();

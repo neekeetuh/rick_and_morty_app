@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rick_and_morty_app/src/common/consts/color_consts.dart';
@@ -24,38 +25,29 @@ class CharacterCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: Image.network(
-                character.imageUrl,
+              child: CachedNetworkImage(
+                imageUrl: character.imageUrl,
                 width: imageWidth,
                 height: imageWidth,
                 fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return SizedBox(
-                    width: imageWidth,
-                    height: imageWidth,
-                    child: ColoredBox(
-                      color: Colors.grey[300]!,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                placeholder: (context, _) => ColoredBox(
+                  color: Colors.grey[300]!,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                errorWidget: (context, url, error) => SizedBox(
+                  width: imageWidth,
+                  height: imageWidth,
+                  child: ColoredBox(
+                    color: Colors.grey[300]!,
+                    child: Icon(
+                      Icons.broken_image,
+                      color: Colors.grey,
+                      size: imageWidth * 0.5,
                     ),
-                  );
-                },
-                errorBuilder: (context, _, __) {
-                  return SizedBox(
-                    width: imageWidth,
-                    height: imageWidth,
-                    child: ColoredBox(
-                      color: Colors.grey[300]!,
-                      child: Icon(
-                        Icons.broken_image,
-                        color: Colors.grey,
-                        size: imageWidth * 0.5,
-                      ),
-                    ),
-                  );
-                },
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 12.0),
