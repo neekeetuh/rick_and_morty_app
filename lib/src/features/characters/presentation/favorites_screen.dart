@@ -13,8 +13,12 @@ class FavoritesScreen extends StatefulWidget {
   State<FavoritesScreen> createState() => _FavoritesScreenState();
 }
 
+enum SortCriteria { nameAsc, nameDesc, status }
+
+const _favoritesPageStorageKey = 'favorites';
+
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  String _sortCriteria = 'name_asc';
+  SortCriteria _sortCriteria = SortCriteria.nameAsc;
 
   @override
   Widget build(BuildContext context) {
@@ -22,24 +26,25 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         appBar: AppBar(
           title: const Text(StringConsts.appBarFavorites),
           actions: [
-            PopupMenuButton<String>(
+            PopupMenuButton<SortCriteria>(
               icon: const Icon(Icons.sort),
-              onSelected: (String value) {
+              onSelected: (SortCriteria value) {
                 setState(() {
                   _sortCriteria = value;
                 });
               },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                const PopupMenuItem<String>(
-                  value: 'name_asc',
+              itemBuilder: (BuildContext context) =>
+                  <PopupMenuEntry<SortCriteria>>[
+                const PopupMenuItem<SortCriteria>(
+                  value: SortCriteria.nameAsc,
                   child: Text(StringConsts.sortInAsc),
                 ),
-                const PopupMenuItem<String>(
-                  value: 'name_desc',
+                const PopupMenuItem<SortCriteria>(
+                  value: SortCriteria.nameDesc,
                   child: Text(StringConsts.sortInDesc),
                 ),
-                const PopupMenuItem<String>(
-                  value: 'status',
+                const PopupMenuItem<SortCriteria>(
+                  value: SortCriteria.status,
                   child: Text(StringConsts.sortByStatus),
                 ),
               ],
@@ -49,13 +54,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         body: BlocBuilder<CharactersBloc, CharactersState>(
           builder: (context, state) {
             List<Character> favoriteCharacters = state.favorites ?? [];
-            if (_sortCriteria == 'name_asc') {
-              favoriteCharacters.sort((a, b) => a.name.compareTo(b.name));
-            } else if (_sortCriteria == 'name_desc') {
-              favoriteCharacters.sort((a, b) => b.name.compareTo(a.name));
-            } else if (_sortCriteria == 'status') {
-              favoriteCharacters
-                  .sort((a, b) => a.status.index.compareTo(b.status.index));
+            switch (_sortCriteria) {
+              case SortCriteria.nameAsc:
+                favoriteCharacters.sort((a, b) => a.name.compareTo(b.name));
+              case SortCriteria.nameDesc:
+                favoriteCharacters.sort((a, b) => b.name.compareTo(a.name));
+              case SortCriteria.status:
+                favoriteCharacters
+                    .sort((a, b) => a.status.index.compareTo(b.status.index));
             }
             return favoriteCharacters.isEmpty
                 ? const Center(
@@ -66,7 +72,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     ),
                   )
                 : ListView.builder(
-                    key: const PageStorageKey('favorites'),
+                    key: const PageStorageKey(_favoritesPageStorageKey),
                     itemCount: favoriteCharacters.length,
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.symmetric(

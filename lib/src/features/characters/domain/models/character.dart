@@ -6,30 +6,30 @@ import 'package:rick_and_morty_app/src/features/characters/data/dtos/location_dt
 
 enum CharacterStatus {
   alive(
-      statusColor: ColorConsts.aliveStatusColor,
-      statusText: 'Alive',
-      statusCode: 'Alive'),
+      statusUiColor: ColorConsts.aliveStatusColor,
+      statusUiText: 'Alive',
+      statusApiCode: 'Alive'),
   dead(
-      statusColor: ColorConsts.deadStatusColor,
-      statusText: 'Dead',
-      statusCode: 'Dead'),
+      statusUiColor: ColorConsts.deadStatusColor,
+      statusUiText: 'Dead',
+      statusApiCode: 'Dead'),
   unknown(
-      statusColor: ColorConsts.unknownStatusColor,
-      statusText: 'Unknown',
-      statusCode: 'unknown');
+      statusUiColor: ColorConsts.unknownStatusColor,
+      statusUiText: 'Unknown',
+      statusApiCode: 'unknown');
 
-  final Color statusColor;
-  final String statusText;
-  final String statusCode;
+  final Color statusUiColor;
+  final String statusUiText;
+  final String statusApiCode;
 
   const CharacterStatus(
-      {required this.statusColor,
-      required this.statusText,
-      required this.statusCode});
+      {required this.statusUiColor,
+      required this.statusUiText,
+      required this.statusApiCode});
 
   static CharacterStatus fromName(String statusCode) {
     return CharacterStatus.values
-        .firstWhere((el) => el.statusCode == statusCode);
+        .firstWhere((el) => el.statusApiCode == statusCode);
   }
 }
 
@@ -67,7 +67,7 @@ class Character {
     return CharacterDto(
       id: id,
       name: name,
-      status: status.statusText,
+      status: status.statusUiText,
       species: species,
       location: LocationDto(name: lastKnownLocation),
       image: imageUrl,

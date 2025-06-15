@@ -5,6 +5,8 @@ import 'package:rick_and_morty_app/src/features/characters/presentation/bloc/blo
 import 'package:rick_and_morty_app/src/features/characters/presentation/widgets/theme_toggle_button.dart';
 import 'widgets/character_card.dart';
 
+const _charactersPageStorageKey = 'characters';
+
 class CharacterListScreen extends StatelessWidget {
   const CharacterListScreen({super.key});
 
@@ -27,7 +29,7 @@ class CharacterListScreen extends StatelessWidget {
             onNotification: (notification) =>
                 _onNotification(notification, context),
             child: CustomScrollView(
-              key: const PageStorageKey('characters'),
+              key: const PageStorageKey(_charactersPageStorageKey),
               slivers: [
                 if (state is LoadingCharactersState) ...[
                   const SliverToBoxAdapter(
