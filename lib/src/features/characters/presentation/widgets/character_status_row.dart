@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
 import 'package:rick_and_morty_app/src/common/consts/text_styles_consts.dart';
-import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
+import 'package:rick_and_morty_app/src/features/characters/domain/models/character_status.dart';
 
 class CharacterStatusRow extends StatelessWidget {
   const CharacterStatusRow({

@@ -1,37 +1,6 @@
-import 'package:flutter/material.dart';
-
-import 'package:rick_and_morty_app/src/common/consts/color_consts.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/dtos/character_dto.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/dtos/location_dto.dart';
-
-enum CharacterStatus {
-  alive(
-      statusUiColor: ColorConsts.aliveStatusColor,
-      statusUiText: 'Alive',
-      statusApiCode: 'Alive'),
-  dead(
-      statusUiColor: ColorConsts.deadStatusColor,
-      statusUiText: 'Dead',
-      statusApiCode: 'Dead'),
-  unknown(
-      statusUiColor: ColorConsts.unknownStatusColor,
-      statusUiText: 'Unknown',
-      statusApiCode: 'unknown');
-
-  final Color statusUiColor;
-  final String statusUiText;
-  final String statusApiCode;
-
-  const CharacterStatus(
-      {required this.statusUiColor,
-      required this.statusUiText,
-      required this.statusApiCode});
-
-  static CharacterStatus fromName(String statusCode) {
-    return CharacterStatus.values
-        .firstWhere((el) => el.statusApiCode == statusCode);
-  }
-}
+import 'package:rick_and_morty_app/src/features/characters/domain/models/character_status.dart';
 
 class Character {
   final int id;

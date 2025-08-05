@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
-import 'package:rick_and_morty_app/src/features/characters/domain/repositories/characters_repository.dart';
+import 'package:rick_and_morty_app/src/features/characters/domain/repositories/characters_repository_interface.dart';
 
 part 'characters_event.dart';
 part 'characters_state.dart';
@@ -9,8 +9,8 @@ const _pagesAmount = 42;
 const _pageLimit = 20;
 
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
-  final CharactersRepository _repository;
-  CharactersBloc({required CharactersRepository repository})
+  final ICharactersRepository _repository;
+  CharactersBloc({required ICharactersRepository repository})
       : _repository = repository,
         super(const IdleCharactersState()) {
     on<CharactersEvent>((event, emit) async {
