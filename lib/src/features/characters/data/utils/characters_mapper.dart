@@ -4,28 +4,16 @@ import 'package:rick_and_morty_app/src/features/characters/data/dtos/character_d
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character_status.dart';
 
-extension CharactersDtoToCompanion on CharacterDto {
+extension CharactersModelToCompanion on Character {
   CharactersCompanion toCompanion() {
     return CharactersCompanion(
       id: Value(id),
       name: Value(name),
-      status: Value(status),
+      status: Value(status.name),
       species: Value(species),
-      image: Value(image),
-      location: Value(location),
+      image: Value(imageUrl),
+      location: Value(lastKnownLocation),
     );
-  }
-}
-
-extension CharactersDataClassToDto on CharacterDataClass {
-  CharacterDto toDto() {
-    return CharacterDto(
-        id: id,
-        image: image,
-        name: name,
-        status: status,
-        species: species,
-        location: location);
   }
 }
 
@@ -37,7 +25,20 @@ extension CharactersDataClassToModel on CharacterDataClass {
         imageUrl: image,
         status: CharacterStatus.fromName(status),
         species: species,
-        lastKnownLocation: location.name,
+        lastKnownLocation: location,
         isFavorite: isFavorite);
+  }
+}
+
+extension CharacterDtoToModel on CharacterDto {
+  Character toModel() {
+    return Character(
+      id: id,
+      name: name,
+      imageUrl: image,
+      status: CharacterStatus.fromName(status),
+      species: species,
+      lastKnownLocation: location.name,
+    );
   }
 }

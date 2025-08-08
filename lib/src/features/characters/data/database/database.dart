@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:rick_and_morty_app/src/features/characters/data/dtos/location_dto.dart';
 
 part 'database.g.dart';
 part 'tables.dart';

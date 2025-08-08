@@ -7,7 +7,7 @@ class Characters extends Table {
   TextColumn get status => text()();
   TextColumn get species => text()();
   TextColumn get image => text()();
-  TextColumn get location => text().map(LocationDto.converter)();
+  TextColumn get location => text()();
   BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
 
   @override

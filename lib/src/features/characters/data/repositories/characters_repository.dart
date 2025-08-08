@@ -1,5 +1,6 @@
 import 'package:rick_and_morty_app/src/features/characters/data/data_sources/local/characters_local_data_source_interface.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/data_sources/remote/characters_remote_data_source_interface.dart';
+import 'package:rick_and_morty_app/src/features/characters/data/utils/characters_mapper.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/models/character.dart';
 import 'package:rick_and_morty_app/src/features/characters/domain/repositories/characters_repository_interface.dart';
 
@@ -19,11 +20,11 @@ class CharactersRepository implements ICharactersRepository {
     var characters = <Character>[];
     try {
       final dtos = await _remoteDataSource.fetchCharacters(page: page);
-      await _localDataSource.saveCharacters(dtos);
+      await _localDataSource
+          .saveCharacters(dtos.map((dto) => dto.toModel()).toList());
     } catch (_) {
     } finally {
-      final localDtos = await _localDataSource.fetchCharacters(page, pageLimit);
-      characters = localDtos.map((dto) => Character.fromDto(dto)).toList();
+      characters = await _localDataSource.fetchCharacters(page, pageLimit);
     }
     return characters;
   }

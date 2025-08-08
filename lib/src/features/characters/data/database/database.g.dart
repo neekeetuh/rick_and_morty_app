@@ -38,10 +38,9 @@ class $CharactersTable extends Characters
   static const VerificationMeta _locationMeta =
       const VerificationMeta('location');
   @override
-  late final GeneratedColumnWithTypeConverter<LocationDto, String> location =
-      GeneratedColumn<String>('location', aliasedName, false,
-              type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<LocationDto>($CharactersTable.$converterlocation);
+  late final GeneratedColumn<String> location = GeneratedColumn<String>(
+      'location', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _isFavoriteMeta =
       const VerificationMeta('isFavorite');
   @override
@@ -92,7 +91,12 @@ class $CharactersTable extends Characters
     } else if (isInserting) {
       context.missing(_imageMeta);
     }
-    context.handle(_locationMeta, const VerificationResult.success());
+    if (data.containsKey('location')) {
+      context.handle(_locationMeta,
+          location.isAcceptableOrUnknown(data['location']!, _locationMeta));
+    } else if (isInserting) {
+      context.missing(_locationMeta);
+    }
     if (data.containsKey('is_favorite')) {
       context.handle(
           _isFavoriteMeta,
@@ -118,9 +122,8 @@ class $CharactersTable extends Characters
           .read(DriftSqlType.string, data['${effectivePrefix}species'])!,
       image: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}image'])!,
-      location: $CharactersTable.$converterlocation.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}location'])!),
+      location: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}location'])!,
       isFavorite: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_favorite'])!,
     );
@@ -130,9 +133,6 @@ class $CharactersTable extends Characters
   $CharactersTable createAlias(String alias) {
     return $CharactersTable(attachedDatabase, alias);
   }
-
-  static JsonTypeConverter2<LocationDto, String, String> $converterlocation =
-      LocationDto.converter;
 }
 
 class CharacterDataClass extends DataClass
@@ -142,7 +142,7 @@ class CharacterDataClass extends DataClass
   final String status;
   final String species;
   final String image;
-  final LocationDto location;
+  final String location;
   final bool isFavorite;
   const CharacterDataClass(
       {required this.id,
@@ -160,10 +160,7 @@ class CharacterDataClass extends DataClass
     map['status'] = Variable<String>(status);
     map['species'] = Variable<String>(species);
     map['image'] = Variable<String>(image);
-    {
-      map['location'] =
-          Variable<String>($CharactersTable.$converterlocation.toSql(location));
-    }
+    map['location'] = Variable<String>(location);
     map['is_favorite'] = Variable<bool>(isFavorite);
     return map;
   }
@@ -189,8 +186,7 @@ class CharacterDataClass extends DataClass
       status: serializer.fromJson<String>(json['status']),
       species: serializer.fromJson<String>(json['species']),
       image: serializer.fromJson<String>(json['image']),
-      location: $CharactersTable.$converterlocation
-          .fromJson(serializer.fromJson<String>(json['location'])),
+      location: serializer.fromJson<String>(json['location']),
       isFavorite: serializer.fromJson<bool>(json['isFavorite']),
     );
   }
@@ -203,8 +199,7 @@ class CharacterDataClass extends DataClass
       'status': serializer.toJson<String>(status),
       'species': serializer.toJson<String>(species),
       'image': serializer.toJson<String>(image),
-      'location': serializer
-          .toJson<String>($CharactersTable.$converterlocation.toJson(location)),
+      'location': serializer.toJson<String>(location),
       'isFavorite': serializer.toJson<bool>(isFavorite),
     };
   }
@@ -215,7 +210,7 @@ class CharacterDataClass extends DataClass
           String? status,
           String? species,
           String? image,
-          LocationDto? location,
+          String? location,
           bool? isFavorite}) =>
       CharacterDataClass(
         id: id ?? this.id,
@@ -275,7 +270,7 @@ class CharactersCompanion extends UpdateCompanion<CharacterDataClass> {
   final Value<String> status;
   final Value<String> species;
   final Value<String> image;
-  final Value<LocationDto> location;
+  final Value<String> location;
   final Value<bool> isFavorite;
   const CharactersCompanion({
     this.id = const Value.absent(),
@@ -292,7 +287,7 @@ class CharactersCompanion extends UpdateCompanion<CharacterDataClass> {
     required String status,
     required String species,
     required String image,
-    required LocationDto location,
+    required String location,
     this.isFavorite = const Value.absent(),
   })  : name = Value(name),
         status = Value(status),
@@ -325,7 +320,7 @@ class CharactersCompanion extends UpdateCompanion<CharacterDataClass> {
       Value<String>? status,
       Value<String>? species,
       Value<String>? image,
-      Value<LocationDto>? location,
+      Value<String>? location,
       Value<bool>? isFavorite}) {
     return CharactersCompanion(
       id: id ?? this.id,
@@ -357,8 +352,7 @@ class CharactersCompanion extends UpdateCompanion<CharacterDataClass> {
       map['image'] = Variable<String>(image.value);
     }
     if (location.present) {
-      map['location'] = Variable<String>(
-          $CharactersTable.$converterlocation.toSql(location.value));
+      map['location'] = Variable<String>(location.value);
     }
     if (isFavorite.present) {
       map['is_favorite'] = Variable<bool>(isFavorite.value);
@@ -399,7 +393,7 @@ typedef $$CharactersTableCreateCompanionBuilder = CharactersCompanion Function({
   required String status,
   required String species,
   required String image,
-  required LocationDto location,
+  required String location,
   Value<bool> isFavorite,
 });
 typedef $$CharactersTableUpdateCompanionBuilder = CharactersCompanion Function({
@@ -408,7 +402,7 @@ typedef $$CharactersTableUpdateCompanionBuilder = CharactersCompanion Function({
   Value<String> status,
   Value<String> species,
   Value<String> image,
-  Value<LocationDto> location,
+  Value<String> location,
   Value<bool> isFavorite,
 });
 
@@ -436,10 +430,8 @@ class $$CharactersTableFilterComposer
   ColumnFilters<String> get image => $composableBuilder(
       column: $table.image, builder: (column) => ColumnFilters(column));
 
-  ColumnWithTypeConverterFilters<LocationDto, LocationDto, String>
-      get location => $composableBuilder(
-          column: $table.location,
-          builder: (column) => ColumnWithTypeConverterFilters(column));
+  ColumnFilters<String> get location => $composableBuilder(
+      column: $table.location, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<bool> get isFavorite => $composableBuilder(
       column: $table.isFavorite, builder: (column) => ColumnFilters(column));
@@ -500,7 +492,7 @@ class $$CharactersTableAnnotationComposer
   GeneratedColumn<String> get image =>
       $composableBuilder(column: $table.image, builder: (column) => column);
 
-  GeneratedColumnWithTypeConverter<LocationDto, String> get location =>
+  GeneratedColumn<String> get location =>
       $composableBuilder(column: $table.location, builder: (column) => column);
 
   GeneratedColumn<bool> get isFavorite => $composableBuilder(
@@ -540,7 +532,7 @@ class $$CharactersTableTableManager extends RootTableManager<
             Value<String> status = const Value.absent(),
             Value<String> species = const Value.absent(),
             Value<String> image = const Value.absent(),
-            Value<LocationDto> location = const Value.absent(),
+            Value<String> location = const Value.absent(),
             Value<bool> isFavorite = const Value.absent(),
           }) =>
               CharactersCompanion(
@@ -558,7 +550,7 @@ class $$CharactersTableTableManager extends RootTableManager<
             required String status,
             required String species,
             required String image,
-            required LocationDto location,
+            required String location,
             Value<bool> isFavorite = const Value.absent(),
           }) =>
               CharactersCompanion.insert(
