@@ -9,7 +9,7 @@ extension CharactersModelToCompanion on Character {
     return CharactersCompanion(
       id: Value(id),
       name: Value(name),
-      status: Value(status.name),
+      status: Value(status.statusApiCode),
       species: Value(species),
       image: Value(imageUrl),
       location: Value(lastKnownLocation),
