@@ -6,13 +6,13 @@ import 'package:rick_and_morty_app/src/features/characters/data/data_sources/rem
 import 'package:rick_and_morty_app/src/features/characters/data/dtos/character_dto.dart';
 
 class CharactersRemoteDataSource implements ICharactersRemoteDataSource {
-  final Dio dio;
+  final Dio _dio;
 
-  CharactersRemoteDataSource({required this.dio});
+  CharactersRemoteDataSource({required Dio dio}) : _dio = dio;
   @override
   Future<List<CharacterDto>> fetchCharacters({int page = 1}) async {
     try {
-      final response = await dio.get(
+      final response = await _dio.get(
         '${ApiConfig.baseUrl}/${ApiConfig.charactersEndpoint}',
         queryParameters: {'page': page},
       );
