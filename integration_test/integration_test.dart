@@ -18,7 +18,7 @@ void main() {
         await tester.pump();
 
         // Делаем небольшую задержку, чтобы BLoC успел выдать состояние загрузки.
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pump(const Duration(milliseconds: 50));
 
         // Теперь проверяем наличие индикатора. BLoC должен был переключиться в состояние загрузки.
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
