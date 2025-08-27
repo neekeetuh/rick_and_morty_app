@@ -33,16 +33,21 @@ jobs:
           target: google_apis
           arch: x86_64
           script: |
-            # Находим ID эмулятора внутри этого блока
+            echo "Waiting for emulator to be fully booted..."
+            # Wait for the device to connect
+            adb wait-for-device
+            # Wait for the boot to complete
+            adb shell while [[ -z $(getprop sys.boot_completed) ]]; do sleep 5; done
+            
+            # Now, find the emulator ID
             EMULATOR_ID=$(adb devices | grep emulator | cut -f1)
             
-            # Проверяем, найден ли эмулятор
             if [ -z "$EMULATOR_ID" ]; then
-              echo "Error: No emulator found. Exiting."
+              echo "Error: Emulator ID could not be found after boot."
               exit 1
             fi
             
-            echo "Found emulator: $EMULATOR_ID"
+            echo "Emulator is ready! ID: $EMULATOR_ID"
             
-            # Передаем найденный ID в скрипт
-            ./run_tests.sh -d "$EMULATOR_ID"
+            # Execute the test script with the emulator ID
+            ./run_tests.sh "$EMULATOR_ID"
