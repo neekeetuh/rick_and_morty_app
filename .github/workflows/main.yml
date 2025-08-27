@@ -1,45 +1,35 @@
 name: Flutter CI/CD
 
 on:
-  push:
-    branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-13
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Install Java
-        uses: actions/setup-java@v1
-        with:
-         java-version: "17.0.16"
 
       - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.35.2'
           channel: 'stable'
-      
-      - name: Make script executable
-        run: chmod +x run_tests.sh
 
       - name: Start Android Emulator and Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 31
+          api-level: 29
           target: google_apis
           arch: x86_64
+          emulator-options: '-no-window -no-snapshot -noaudio -no-boot-anim -gpu host'
           script: |
             echo "Waiting for emulator to be fully booted..."
-            # Wait for the device to connect
+            
             adb wait-for-device
-            # Wait for the boot to complete
             adb shell while [[ -z $(getprop sys.boot_completed) ]]; do sleep 5; done
             
-            # Now, find the emulator ID
             EMULATOR_ID=$(adb devices | grep emulator | cut -f1)
             
             if [ -z "$EMULATOR_ID" ]; then
@@ -47,7 +37,6 @@ jobs:
               exit 1
             fi
             
-            echo "Emulator is ready! ID: $EMULATOR_ID"
+            echo "Found emulator: $EMULATOR_ID"
             
-            # Execute the test script with the emulator ID
             ./run_tests.sh "$EMULATOR_ID"

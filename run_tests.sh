@@ -32,6 +32,6 @@ else
 fi
 
 # The command to run integration tests on the detected emulator.
-flutter test integration_test/integration_test.dart $DEVICE_FLAG"
+flutter test integration_test/integration_test.dart "$DEVICE_FLAG"
 
 echo "--- Все тесты успешно выполнены! ---"

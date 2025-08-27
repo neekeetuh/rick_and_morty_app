@@ -1,0 +1,26 @@
+workflows:
+  flutter-test:
+    name: Flutter Integration Tests
+    instance_type: mac_mini_m2
+    
+    environment:
+      flutter: stable
+      xcode: 16.4
+
+    scripts:
+      - name: Make script executable
+        script: |
+          chmod +x ./run_tests.sh
+
+      - name: List available emulators
+        script: |
+          flutter emulators
+      
+      - name: Launch Android emulator
+        script: |
+          flutter emulators --launch emulator
+
+      - name: Run tests script
+        script: |
+          DEVICE_ID=$(flutter devices | grep emulator | cut -f1)
+          ./run_tests.sh "$DEVICE_ID"
