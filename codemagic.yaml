@@ -18,5 +18,4 @@ workflows:
 
       - name: Run tests script
         script: |
-          DEVICE_ID=$(flutter devices | grep "iOS Simulator" | cut -f1)
-          ./run_tests.sh "$DEVICE_ID"
+          ./run_tests.sh
