@@ -23,15 +23,16 @@ jobs:
           flutter-version: '3.35.2'
           channel: 'stable'
       
-      - name: Start Android Emulator
+      - name: Make script executable
+        run: chmod +x run_tests.sh
+
+      - name: Start Android Emulator and Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 31
           target: google_apis
           arch: x86_64
-
-      - name: Make script executable
-        run: chmod +x run_tests.sh
-
-      - name: Run all tests
-        run: ./run_tests.sh
+          flutter-version: '3.35.2'
+          channel: 'stable'
+          script: |
+            ./run_tests.sh
