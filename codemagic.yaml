@@ -12,15 +12,11 @@ workflows:
         script: |
           chmod +x ./run_tests.sh
 
-      - name: List available emulators
+      - name: Launch emulator
         script: |
-          flutter emulators
-      
-      - name: Launch Android emulator
-        script: |
-          flutter emulators --launch emulator
+          flutter emulators --launch apple_ios_simulator
 
       - name: Run tests script
         script: |
-          DEVICE_ID=$(flutter devices | grep emulator | cut -f1)
+          DEVICE_ID=$(flutter devices | grep "iOS Simulator" | cut -f1)
           ./run_tests.sh "$DEVICE_ID"
