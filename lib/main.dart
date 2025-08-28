@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rick_and_morty_app/firebase_options.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
+import 'package:rick_and_morty_app/src/common/services/remote_config_service.dart';
 import 'package:rick_and_morty_app/src/common/theme/theme_provider.dart';
 import 'package:rick_and_morty_app/src/common/theme/themes.dart';
 import 'package:rick_and_morty_app/src/features/auth/data/auth_repository.dart';
@@ -22,9 +23,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final remoteConfigService = RemoteConfigService();
+  await remoteConfigService.initialize();
   runApp(Provider<RickAndMortyDatabase>(
     create: (BuildContext context) => RickAndMortyDatabase(),
-    child: const MyApp(),
+    child: MyApp(
+      useDarkMode: remoteConfigService.isDarkModeEnabled,
+    ),
     dispose: (context, db) => db.close(),
   ));
 }
@@ -33,12 +38,14 @@ void main() async {
 const bool isFirestore = true;
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.useDarkMode});
+
+  final bool useDarkMode;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+      create: (context) => ThemeProvider(isDarkModeInitially: useDarkMode),
       child: Builder(builder: (context) {
         return MaterialApp(
           title: StringConsts.appName,
