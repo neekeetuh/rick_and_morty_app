@@ -50,7 +50,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
   Future<void> _onToggleFavoriteEvent(
       ToggleFavoriteEvent event, Emitter<CharactersState> emit) async {
     try {
-      await _repository.toggleFavoriteStatus(event.character.id);
+      await _repository.toggleFavoriteStatus(event.character);
     } catch (e) {
       emit(ErrorCharactersState(error: e));
     }

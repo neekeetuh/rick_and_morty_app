@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/data_sources/local/characters_local_data_source_interface.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/data_sources/remote/characters_remote_data_source_interface.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/utils/characters_mapper.dart';
@@ -8,6 +9,8 @@ class CharactersRepository implements ICharactersRepository {
   final ICharactersRemoteDataSource _remoteDataSource;
 
   final ICharactersLocalDataSource _localDataSource;
+
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   CharactersRepository({
     required ICharactersRemoteDataSource charactersDataSource,
@@ -35,7 +38,28 @@ class CharactersRepository implements ICharactersRepository {
   }
 
   @override
-  Future<void> toggleFavoriteStatus(int characterId) async {
-    _localDataSource.toggleFavoriteStatus(characterId);
+  Future<void> toggleFavoriteStatus(Character character) async {
+    try {
+      await _localDataSource.toggleFavoriteStatus(character.id);
+      if (character.isFavorite) {
+        await _analytics.logEvent(
+          name: 'favorite_removed',
+          parameters: {
+            'character_id': character.id,
+            'character_name': character.name,
+          },
+        );
+      } else {
+        await _analytics.logEvent(
+          name: 'favorite_added',
+          parameters: {
+            'character_id': character.id,
+            'character_name': character.name,
+          },
+        );
+      }
+    } catch (_) {
+      rethrow;
+    }
   }
 }
