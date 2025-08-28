@@ -4,6 +4,7 @@ abstract class StringConsts {
   static const String appBarFavorites = 'Favorite Characters';
   static const String charactersTabTitle = 'Characters';
   static const String favoritesTabTitle = 'Favorites';
+  static const String accountTabTitle = 'Account';
   static const String favoriteCharacters = 'Favorite Characters';
   static const String sortInAsc = 'ASC';
   static const String sortInDesc = 'DESC';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
+import 'package:rick_and_morty_app/src/features/auth/presentation/auth_gate.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/bloc/bloc/characters_bloc.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/character_list_screen.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/favorites_screen.dart';
@@ -18,6 +19,7 @@ class _BaseScreenState extends State<BaseScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     CharacterListScreen(),
     FavoritesScreen(),
+    AuthGate()
   ];
 
   void _onItemTapped(int index) {
@@ -47,6 +49,10 @@ class _BaseScreenState extends State<BaseScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
             label: StringConsts.favoritesTabTitle,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: StringConsts.accountTabTitle,
           ),
         ],
         currentIndex: _selectedIndex,

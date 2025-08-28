@@ -17,6 +17,8 @@ dependencies:
   cached_network_image: ^3.4.1
   http: ^1.5.0
   firebase_core: ^4.0.0
+  firebase_auth: ^6.0.1
+  email_validator: ^3.0.0
 
 dev_dependencies:
   flutter_test:
