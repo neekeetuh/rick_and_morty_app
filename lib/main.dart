@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:rick_and_morty_app/firebase_options.dart';
 import 'package:rick_and_morty_app/src/common/consts/string_consts.dart';
 import 'package:rick_and_morty_app/src/common/theme/theme_provider.dart';
 import 'package:rick_and_morty_app/src/common/theme/themes.dart';
@@ -12,8 +14,11 @@ import 'package:rick_and_morty_app/src/features/characters/data/repositories/cha
 import 'package:rick_and_morty_app/src/features/characters/presentation/base_screen.dart';
 import 'package:rick_and_morty_app/src/features/characters/presentation/bloc/bloc/characters_bloc.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(Provider<RickAndMortyDatabase>(
     create: (BuildContext context) => RickAndMortyDatabase(),
     child: const MyApp(),
