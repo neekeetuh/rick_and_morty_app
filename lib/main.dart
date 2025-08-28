@@ -10,6 +10,7 @@ import 'package:rick_and_morty_app/src/common/theme/themes.dart';
 import 'package:rick_and_morty_app/src/features/auth/data/auth_repository.dart';
 import 'package:rick_and_morty_app/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/data_sources/local/characters_local_data_source.dart';
+import 'package:rick_and_morty_app/src/features/characters/data/data_sources/local/firestore_characters_data_source.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/data_sources/remote/characters_remote_data_source.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/database/database.dart';
 import 'package:rick_and_morty_app/src/features/characters/data/repositories/characters_repository.dart';
@@ -27,6 +28,9 @@ void main() async {
     dispose: (context, db) => db.close(),
   ));
 }
+
+//for test purposes only
+const bool isFirestore = true;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -49,8 +53,10 @@ class MyApp extends StatelessWidget {
                   charactersDataSource: CharactersRemoteDataSource(
                     dio: Dio(),
                   ),
-                  localDataSource: CharactersLocalDataSource(
-                      db: context.read<RickAndMortyDatabase>()),
+                  localDataSource: isFirestore
+                      ? FirestoreCharactersDataSource()
+                      : CharactersLocalDataSource(
+                          db: context.read<RickAndMortyDatabase>()),
                 )),
               ),
               BlocProvider(
